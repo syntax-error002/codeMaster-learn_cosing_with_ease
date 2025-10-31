@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Learning Adventure</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --error-color: #f72585;
+            --background-color: #f8f9fa;
+            --text-color: #2b2d42;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            margin-top: 200px;  /* Increased spacing from top */
+            max-width: 800px;
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgb(213, 214, 241);
+            padding: 30px 20px;
+            z-index: 1000;
+            box-shadow: 0 8px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin: 0 0 15px 0;
+            opacity: 0.8;
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 140px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            max-width: 500px;
+            margin-left: auto;  /* Align with quiz container */
+            margin-right: auto;
+            background: #eee;
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-color), var(--success-color));
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%
+            );
+            background-size: 20px 20px;
+            animation: moveStripes 1s linear infinite;
+        }
+
+        @keyframes moveStripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 0; }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Add these new styles */
+        .stats div {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .stats div:hover {
+            transform: translateY(-2px);
+        }
+
+        .streak-counter {
+            color: #fff;  /* Changed from var(--secondary-color) */
+            font-weight: bold;
+            font-size: 1.2rem;
+            animation: bounce 0.5s;
+        }
+
+        .question-container {
+            background: #f8f9fa;
+            padding: 25px;  /* Increased padding */
+            border-radius: 10px;
+            margin-bottom: 30px;  /* Increased margin */
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .question {
+            font-size: 1.4rem;
+            color: var(--text-color);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* Update the options grid layout */
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Creates 2 columns */
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Update option styling for better grid fit */
+        .option {
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            height: 100%; /* Ensure consistent height */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Make options responsive for mobile */
+        @media (max-width: 600px) {
+            .options {
+                grid-template-columns: 1fr; /* Stack options on mobile */
+            }
+        }
+
+        .option:hover {
+            transform: translateX(5px);
+            border-color: var(--primary-color);
+            background: #f8f9fa;
+        }
+
+        .option.correct {
+            background: linear-gradient(to right, var(--success-color), #27ae60);
+            color: white;
+            border-color: var(--success-color);
+            transform: scale(1.02);
+        }
+
+        .option.incorrect {
+            background: linear-gradient(to right, var(--error-color), #c0392b);
+            color: white;
+            border-color: var(--error-color);
+            transform: scale(0.98);
+        }
+
+        .option-prefix {
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 8px;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .feedback {
+            margin: 25px 0;  /* Increased margin */
+            padding: 20px 25px;  /* Increased padding */
+            border-radius: 12px;
+            display: none;
+            animation: slideIn 0.5s;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .next-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            margin-top: 25px;  /* Increased margin */
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .hint-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-bottom: 25px;  /* Increased margin */
+            font-size: 1rem;
+        }
+
+        .hint-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .result-container {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .result-emoji {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            animation: bounce 1s infinite;
+        }
+
+        .result-message {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .result-stats {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 25px;
+            margin: 5px;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            animation: pulse 1s infinite;
+        }
+
+        /* Optional: Add hover effect */
+        .timer:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Add these styles to your <style> section */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;  /* Above header */
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .back-btn::before {
+            content: '←';
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="window.location.href='test.html'">Back</button>
+    <div class="quiz-container">
+        <div class="header">
+            <div class="header-content">
+                <h1>Java Learning Adventure</h1>
+                <p>Master Java basics through fun quizzes!</p>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div>Score: <span id="score">0</span></div>
+            <div>Streak: <span id="streak" class="streak-counter">0</span>🔥</div>
+            <div>Question: <span id="question-number">1</span>/<span id="total-questions">10</span></div>
+        </div>
+
+        <div class="timer" id="timer">Time: 30s</div>
+        
+        <div class="question-container">
+            <button id="hint-btn" class="hint-btn">Need a Hint? 💡</button>
+            <div id="question" class="question"></div>
+            <div id="options" class="options"></div>
+        </div>
+        
+        <div id="feedback" class="feedback"></div>
+        <button id="next" class="next-btn">Next Question →</button>
+    </div>
+
+    <script>
+        // Enhanced questions array with hints and explanations
+        const questions = [
+            {
+                question: "What is the correct way to declare a Java variable?",
+                options: [
+                    "var x = 10;",
+                    "int x = 10;",
+                    "x = 10;",
+                    "variable x = 10;"
+                ],
+                correct: 1,
+                hint: "Java requires explicit type declaration!",
+                explanation: "In Java, variables must be declared with their data type. 'int x = 10;' is the correct syntax."
+            },
+            {
+                question: "Which of these is the main method signature in Java?",
+                options: [
+                    "public void main()",
+                    "public static void main()",
+                    "public static void main(String[] args)",
+                    "public void main(String[] args)"
+                ],
+                correct: 2,
+                hint: "It needs to be static and accept String arguments!",
+                explanation: "The main method in Java must be public, static, void, and accept String array as parameter."
+            },
+            {
+                question: "What is the correct way to create an array in Java?",
+                options: [
+                    "array[] nums = new array[5];",
+                    "int nums[] = new int[];",
+                    "int[] nums = new int[5];",
+                    "int nums = new int[5];"
+                ],
+                correct: 2,
+                hint: "You need to specify the size when creating an array!",
+                explanation: "int[] nums = new int[5]; is the correct syntax to create an array of integers with size 5."
+            },
+            {
+                question: "Which loop type doesn't exist in Java?",
+                options: [
+                    "for loop",
+                    "do...while loop",
+                    "until loop",
+                    "while loop"
+                ],
+                correct: 2,
+                hint: "Java has for, while, and do-while loops!",
+                explanation: "'until' loop doesn't exist in Java. The available loops are for, while, and do-while."
+            },
+            {
+                question: "What is the correct way to create an object in Java?",
+                options: [
+                    "MyClass obj = construct MyClass();",
+                    "obj = new MyClass;",
+                    "new obj = MyClass();",
+                    "MyClass obj = new MyClass();"
+                ],
+                correct: 3,
+                hint: "You need to use the 'new' keyword!",
+                explanation: "Objects are created using the 'new' keyword: MyClass obj = new MyClass();"
+            },
+            {
+                question: "Which is NOT a valid access modifier in Java?",
+                options: [
+                    "public",
+                    "friendly",
+                    "protected",
+                    "private"
+                ],
+                correct: 1,
+                hint: "Java has three main access modifiers plus default!",
+                explanation: "'friendly' is not a valid access modifier. Valid ones are public, private, protected, and default."
+            },
+            {
+                question: "What is the correct way to handle exceptions in Java?",
+                options: [
+                    "try-catch",
+                    "try-except",
+                    "catch-try",
+                    "error-catch"
+                ],
+                correct: 0,
+                hint: "It's similar to other languages but with different keywords!",
+                explanation: "try-catch is the correct syntax for exception handling in Java."
+            },
+            {
+                question: "Which operator is used for string concatenation in Java?",
+                options: [
+                    "+",
+                    "&",
+                    ".",
+                    ","
+                ],
+                correct: 0,
+                hint: "It's the same operator used for addition!",
+                explanation: "The + operator is used for both numeric addition and string concatenation in Java."
+            },
+            {
+                question: "What is the default value of an int variable in Java?",
+                options: [
+                    "null",
+                    "0",
+                    "undefined",
+                    "1"
+                ],
+                correct: 1,
+                hint: "Think about the starting point for numbers!",
+                explanation: "The default value for int variables in Java is 0."
+            },
+            {
+                question: "Which collection type maintains insertion order?",
+                options: [
+                    "HashSet",
+                    "TreeSet",
+                    "ArrayList",
+                    "HashMap"
+                ],
+                correct: 2,
+                hint: "Think about which one is similar to an array!",
+                explanation: "ArrayList maintains the insertion order of elements, while HashSet and TreeSet don't."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let streak = 0;
+        let timer;
+        let timeLeft = 30;
+
+        function startTimer() {
+            timeLeft = 30;
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = `Time: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function handleTimeout() {
+            checkAnswer(-1); // Wrong answer
+            document.getElementById('timer').textContent = "Time's up!";
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                const prefix = document.createElement('span');
+                prefix.className = 'option-prefix';
+                prefix.textContent = String.fromCharCode(65 + index);
+                
+                button.appendChild(prefix);
+                button.appendChild(document.createTextNode(' ' + option));
+                
+                button.onclick = () => checkAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+
+            // Update progress bar with smooth animation
+            const progress = ((currentQuestion) / questions.length) * 100;
+            const progressFill = document.querySelector('.progress-fill');
+            progressFill.style.width = `${progress}%`;
+
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
+            
+            startTimer();
+        }
+
+        function showHint() {
+            const question = questions[currentQuestion];
+            alert(`Hint: ${question.hint}`);
+        }
+
+        document.getElementById('hint-btn').addEventListener('click', showHint);
+
+        function checkAnswer(selectedIndex) {
+            clearInterval(timer);
+            const question = questions[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            // Disable all options
+            options.forEach(option => option.style.pointerEvents = 'none');
+            
+            // Show correct and incorrect answers
+            options[question.correct].classList.add('correct');
+            
+            if (selectedIndex === question.correct) {
+                score += 10;
+                streak++;
+                document.getElementById('score').textContent = score;
+                document.getElementById('streak').textContent = streak;
+                document.getElementById('feedback').textContent = `Correct! ${question.explanation}`;
+                document.getElementById('feedback').style.backgroundColor = 'var(--success-color)';
+            } else {
+                streak = 0;
+                document.getElementById('streak').textContent = streak;
+                if (selectedIndex !== -1) { // Only mark incorrect if an option was actually selected
+                    options[selectedIndex].classList.add('incorrect');
+                }
+                document.getElementById('feedback').textContent = `Incorrect. ${question.explanation}`;
+                document.getElementById('feedback').style.backgroundColor = 'var(--error-color)';
+            }
+            
+            document.getElementById('feedback').style.display = 'block';
+            document.getElementById('feedback').style.color = 'white';
+            document.getElementById('next').style.display = 'block';
+        }
+
+        // Start the quiz
+        displayQuestion();
+
+        document.getElementById('next').addEventListener('click', () => {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                // Reset the options and feedback before displaying next question
+                const options = document.querySelectorAll('.option');
+                options.forEach(option => {
+                    option.classList.remove('correct', 'incorrect');
+                    option.style.pointerEvents = 'auto';
+                });
+                displayQuestion();
+            } else {
+                showFinalResults();
+            }
+        });
+
+        function showFinalResults() {
+            const quizContainer = document.querySelector('.quiz-container');
+            const percentage = (score / (questions.length * 10)) * 100;
+            
+            quizContainer.innerHTML = `
+                <div class="result-container">
+                    <div class="result-emoji">${percentage >= 70 ? '🎉' : '🎯'}</div>
+                    <h2 class="result-message">Quiz Complete!</h2>
+                    <div class="result-stats">
+                        <p style="font-size: 1.2rem; margin: 10px 0;">Final Score: ${score} points</p>
+                        <p style="font-size: 1.2rem; margin: 10px 0;">Accuracy: ${Math.round(percentage)}%</p>
+                    </div>
+                    <div class="badges">
+                        ${streak >= 3 ? '<span class="badge">🔥 Hot Streak!</span>' : ''}
+                        ${percentage >= 90 ? '<span class="badge">🌟 Expert!</span>' : ''}
+                        ${percentage >= 70 ? '<span class="badge">🎓 Passed!</span>' : ''}
+                        ${percentage >= 50 ? '<span class="badge">👍 Good Try!</span>' : ''}
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <button class="next-btn" onclick="location.reload()">Try Again</button>
+                        <button class="next-btn" onclick="window.location.href='index.html'" 
+                                style="margin-left: 10px; background-color: var(--secondary-color);">
+                            Back to Home
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

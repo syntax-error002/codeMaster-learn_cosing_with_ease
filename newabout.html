@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Code Master</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        #header {
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 2px solid #0ff;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        #backButton {
+            background: transparent;
+            color: #0ff;
+            border: 2px solid #0ff;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 20px;
+        }
+
+        #backButton:hover {
+            background: #0ff;
+            color: #000;
+            box-shadow: 0 0 15px #0ff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 100px auto 40px;
+            padding: 20px;
+        }
+
+        .about-section {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #0ff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        h1, h2 {
+            color: #0ff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: '→';
+            color: #0ff;
+            position: absolute;
+            left: 0;
+        }
+
+        .highlight {
+            color: #0ff;
+            font-weight: bold;
+        }
+
+        .controls {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .controls h3 {
+            color: #0ff;
+            margin-top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin-top: 80px;
+            }
+        }
+
+        .contact-btn {
+            background: transparent;
+            color: #0ff;
+            border: 2px solid #0ff;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 20px;
+        }
+
+        .contact-btn:hover {
+            background: #0ff;
+            color: #000;
+            box-shadow: 0 0 15px #0ff;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px 40px;
+            border: 2px solid #0ff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            z-index: 1001;
+        }
+
+        .popup-content {
+            text-align: center;
+            color: #fff;
+        }
+
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: #0ff;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <button id="backButton" onclick="goBack()">← Back</button>
+        <button id="contactButton" onclick="showNumber()" class="contact-btn">Contact</button>
+        <h2>About Code Master</h2>
+    </div>
+
+    <div class="container">
+        <div class="about-section">
+            <h1>What is Code Master?</h1>
+            <p>
+                Code Master is an innovative educational game designed to make learning JavaScript fun and interactive. 
+                By combining arcade-style gameplay with programming concepts, players can improve their coding skills 
+                while enjoying an engaging gaming experience.
+            </p>
+        </div>
+
+        <div class="about-section">
+            <h2>How It Works</h2>
+            <p>
+                As you play, you'll encounter various enemies that represent different JavaScript concepts. 
+                Destroying these enemies reveals coding snippets and explanations, helping you learn 
+                programming concepts through active gameplay.
+            </p>
+            
+            <div class="controls">
+                <h3>Game Controls</h3>
+                <ul class="feature-list">
+                    <li>Use <span class="highlight">Arrow Keys</span> or <span class="highlight">A/D</span> to move left and right</li>
+                    <li>Press <span class="highlight">Spacebar</span> or <span class="highlight">Up Arrow</span> to shoot</li>
+                    <li>Destroy enemies to learn JavaScript concepts</li>
+                    <li>Avoid enemy contact to stay alive</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2>Learning Features</h2>
+            <ul class="feature-list">
+                <li>Interactive learning through gameplay</li>
+                <li>Real JavaScript code examples</li>
+                <li>Progressive difficulty levels</li>
+                <li>Instant feedback and explanations</li>
+                <li>Score tracking for progress monitoring</li>
+            </ul>
+        </div>
+
+        <div class="about-section">
+            <h2>JavaScript Concepts Covered</h2>
+            <ul class="feature-list">
+                <li>Variables and Constants</li>
+                <li>Functions and Methods</li>
+                <li>Arrays and Objects</li>
+                <li>Loops and Conditionals</li>
+                <li>Arrow Functions</li>
+                <li>Async/Await Operations</li>
+                <li>And many more!</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="numberPopup">
+        <button class="close-btn" onclick="closePopup()">×</button>
+        <div class="popup-content">
+            <h3>Contact Information</h3>
+            <p>Phone: +91 7862008920</p>
+            <p>LinkedIn: <a href="https://www.linkedin.com/in/shaswat-kureel-231aa2337?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">Shaswat [founder]</a></p>
+            <p>Instagram: @Shaswat1151  [founder]</p>
+            <h3>Email</h3>
+            <p>kureelshaswat1@gmail.com</p>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = '../index.html';
+        }
+
+        function showNumber() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('numberPopup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('numberPopup').style.display = 'none';
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('overlay').addEventListener('click', closePopup);
+    </script>
+</body>
+</html>

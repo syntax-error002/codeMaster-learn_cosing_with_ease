@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggest Questions - CodeMaster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gradient-1: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --gradient-2: linear-gradient(135deg, #3b82f6, #2dd4bf);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        .hero {
+            background: var(--gradient-1);
+            padding: 6rem 2rem;
+            color: white;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: 8rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: -6rem auto 4rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .suggestion-form {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .difficulty-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .difficulty-option {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .difficulty-option input[type="radio"] {
+            display: none;
+        }
+
+        .difficulty-option label {
+            display: block;
+            padding: 0.75rem;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-option input[type="radio"]:checked + label {
+            background: var(--gradient-1);
+            color: white;
+            border-color: transparent;
+        }
+
+        .submit-btn {
+            background: var(--gradient-2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--gradient-1);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            font-weight: 500;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 1rem;
+                margin-bottom: 6rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+                margin-top: -4rem;
+            }
+
+            .back-button {
+                top: 10px;
+                left: 10px;
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .difficulty-option {
+                min-width: 100px;
+            }
+
+            .suggestion-form {
+                padding: 2rem;
+            }
+        }
+
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .popup-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .popup-content h2 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .popup-content p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-btn {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="test.html" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Home
+    </a>
+
+    <div class="hero">
+        <h1>Suggest a Question</h1>
+        <p>Help us improve by suggesting interview questions you've encountered</p>
+    </div>
+
+    <div class="container">
+        <form class="suggestion-form">
+            <div class="form-group">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" class="form-control" placeholder="e.g., Google, Amazon, Microsoft" required>
+            </div>
+
+            <div class="form-group">
+                <label>Difficulty Level</label>
+                <div class="difficulty-options">
+                    <div class="difficulty-option">
+                        <input type="radio" id="easy" name="difficulty" value="easy" required>
+                        <label for="easy">Easy</label>
+                    </div>
+                    <div class="difficulty-option">
+                        <input type="radio" id="medium" name="difficulty" value="medium">
+                        <label for="medium">Medium</label>
+                    </div>
+                    <div class="difficulty-option">
+                        <input type="radio" id="hard" name="difficulty" value="hard">
+                        <label for="hard">Hard</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="question">Question Description</label>
+                <textarea id="question" class="form-control" placeholder="Describe the question in detail..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="solution">Solution Approach (Optional)</label>
+                <textarea id="solution" class="form-control" placeholder="Share your approach or solution..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="tags">Tags</label>
+                <input type="text" id="tags" class="form-control" placeholder="e.g., Arrays, Dynamic Programming, Trees (comma separated)">
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Question</button>
+        </form>
+    </div>
+
+    <div class="popup" id="successPopup">
+        <div class="popup-content">
+            <div class="success-icon">✓</div>
+            <h2>Thank You!</h2>
+            <p>Your suggestion has been submitted successfully.</p>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.suggestion-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Get form data
+            const formData = {
+                company: document.getElementById('company').value,
+                difficulty: document.querySelector('input[name="difficulty"]:checked').value,
+                question: document.getElementById('question').value,
+                solution: document.getElementById('solution').value,
+                tags: document.getElementById('tags').value
+            };
+
+            // Here you would typically send the data to your server
+            // For now, we'll just show the success popup
+            showPopup();
+
+            // Reset form
+            this.reset();
+        });
+
+        function showPopup() {
+            document.getElementById('successPopup').classList.add('show');
+        }
+
+        function closePopup() {
+            document.getElementById('successPopup').classList.remove('show');
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('successPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('successPopup').classList.contains('show')) {
+                closePopup();
+            }
+        });
+    </script>
+</body>
+</html> 

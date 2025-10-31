@@ -1,0 +1,503 @@
+// create a game that helps helps student learn to code 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMaster Learning Game</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --background-color: #f0f4f8;
+            --text-color: #333;
+            --accent-color: #e74c3c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .code-editor {
+            background: #1e1e1e;
+            color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .challenge {
+            margin-bottom: 30px;
+        }
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #357abd;
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .error {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .game-header {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            line-height: 20px;
+            font-size: 12px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .achievement {
+            animation: pop 0.3s ease-out;
+            padding: 10px;
+            background: #ffd700;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Add these new styles */
+        .hint-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            min-width: 300px;
+        }
+
+        .hint-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .tooltip {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+        }
+
+        .btn-confirm {
+            background-color: var(--primary-color);
+        }
+
+        #hint-button.disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        #hint-button {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        #hint-button:hover:not(:disabled) {
+            background-color: #138496;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="stats">
+                <span id="score-display">Score: 0</span>
+                <span id="streak-display">Streak: 0🔥</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+                <span class="progress-text">Challenge 1 of 5</span>
+            </div>
+        </div>
+        <div class="challenge">
+            <h2>Challenge 1: Variables and Data Types</h2>
+            <p>Create a variable named 'greeting' and assign it the value "Hello, World!"</p>
+            <div class="code-editor" contenteditable="true">
+                // Write your code here
+                
+            </div>
+            <button class="btn" onclick="checkAnswer()">Submit Answer</button>
+            <div id="feedback" class="feedback"></div>
+        </div>
+        <div class="controls">
+            <select id="language-select">
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="c">C</option>
+            </select>
+            <button onclick="showHint()" id="hint-button" class="btn">Show Solution 💡 (3 left)</button>
+            <button onclick="checkCode()" class="btn">Submit Code</button>
+        </div>
+    </div>
+
+    <script>
+        // Add these global variables at the start of your script
+        let currentLevel = 0;
+        let score = 0;
+        let streak = 0;
+        let hintsUsed = 0;
+        const MAX_HINTS = 3;
+
+        // Enhanced challenges array with more features
+        const challenges = [
+            {
+                id: 1,
+                title: "Hello, World!",
+                difficulty: "Beginner",
+                points: 10,
+                description: "Write a program that prints 'Hello, World!' to the console.",
+                explanation: "This is the traditional first program. It teaches basic output commands.",
+                languages: {
+                    javascript: {
+                        solution: 'console.log("Hello, World!");',
+                        testCases: [
+                            { input: null, output: "Hello, World!", description: "Basic output" }
+                        ],
+                        hints: [
+                            "Use console.log() to print text",
+                            "Text should be in quotes",
+                            "Don't forget the semicolon"
+                        ],
+                        template: '// Type your code here\n\n'
+                    },
+                    python: {
+                        solution: 'print("Hello, World!")',
+                        testCases: [
+                            { input: null, output: "Hello, World!", description: "Basic output" }
+                        ],
+                        hints: [
+                            "Use print() function",
+                            "Text should be in quotes"
+                        ],
+                        template: '# Type your code here\n\n'
+                    },
+                    c: {
+                        solution: '#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}',
+                        testCases: [
+                            { input: null, output: "Hello, World!", description: "Basic output" }
+                        ],
+                        hints: [
+                            "Include stdio.h header",
+                            "Use printf() function",
+                            "Don't forget \\n for newline"
+                        ],
+                        template: '#include <stdio.h>\n\nint main() {\n    // Your code here\n    return 0;\n}'
+                    }
+                }
+            },
+            // Add more challenges here...
+        ];
+
+        // Add these new functions for enhanced functionality
+        function initializeGame() {
+            loadChallenge();
+            updateScoreDisplay();
+            updateStreakDisplay();
+            setupEventListeners();
+            showWelcomeMessage();
+        }
+
+        function loadChallenge() {
+            const challenge = challenges[currentLevel];
+            const language = document.getElementById('language-select').value;
+            
+            // Update challenge information
+            document.getElementById('challenge-title').textContent = 
+                `${challenge.title} (${challenge.difficulty})`;
+            document.getElementById('challenge-description').innerHTML = 
+                `${challenge.description}<br><small>Points: ${challenge.points}</small>`;
+            
+            // Load language-specific template
+            document.getElementById('code-area').value = challenge.languages[language].template;
+            
+            // Reset UI elements
+            document.getElementById('result').textContent = '';
+            document.getElementById('next-level').style.display = 'none';
+            document.getElementById('hint-text').style.display = 'none';
+            
+            updateLineNumbers();
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentLevel + 1) / challenges.length) * 100;
+            document.querySelector('.progress-fill').style.width = `${progress}%`;
+            document.querySelector('.progress-text').textContent = 
+                `Challenge ${currentLevel + 1} of ${challenges.length}`;
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('score-display').textContent = `Score: ${score}`;
+        }
+
+        function updateStreakDisplay() {
+            document.getElementById('streak-display').textContent = `Streak: ${streak}🔥`;
+        }
+
+        function checkCode() {
+            const language = document.getElementById('language-select').value;
+            const code = document.getElementById('code-area').value.trim();
+            const challenge = challenges[currentLevel];
+            const result = document.getElementById('result');
+
+            if (!code) {
+                showPopup("Please write some code before submitting!");
+                return;
+            }
+
+            try {
+                const testResults = runTests(code, language, challenge);
+                
+                if (testResults.success) {
+                    handleSuccess(challenge.points);
+                } else {
+                    handleFailure(testResults.message);
+                }
+            } catch (error) {
+                handleError(error);
+            }
+        }
+
+        function handleSuccess(points) {
+            // Calculate points reduction if hints were used
+            const pointsReduction = hintsUsed > 0 ? 0.5 : 1; // 50% reduction if hint was used
+            const basePoints = Math.floor(points * pointsReduction);
+            const bonusPoints = calculateBonusPoints();
+            const totalPoints = basePoints + bonusPoints;
+            
+            score += totalPoints;
+            streak++;
+            
+            const result = document.getElementById('result');
+            result.innerHTML = `
+                <div class="success">
+                    🎉 Challenge Complete!
+                    <br>Base Points: +${basePoints} ${hintsUsed > 0 ? '(50% reduction due to hint)' : ''}
+                    ${bonusPoints > 0 ? `<br>🌟 Streak bonus: +${bonusPoints} points!` : ''}
+                    ${hintsUsed === 0 ? '<br>💪 Perfect solution without hints!' : ''}
+                    <br>Total Points: +${totalPoints}
+                </div>
+            `;
+            
+            document.getElementById('next-level').style.display = 'inline-block';
+            updateScoreDisplay();
+            updateStreakDisplay();
+            
+            if (currentLevel === challenges.length - 1) {
+                showGameComplete();
+            }
+        }
+
+        function calculateBonusPoints() {
+            let bonus = 0;
+            if (streak >= 3) bonus += 5;
+            if (hintsUsed === 0) bonus += 3;
+            return bonus;
+        }
+
+        function handleFailure(message) {
+            streak = 0;
+            updateStreakDisplay();
+            
+            const result = document.getElementById('result');
+            result.innerHTML = `
+                <div class="error">
+                    ❌ ${message}
+                    ${hintsUsed < MAX_HINTS ? '<br>💡 Need help? Try using a hint!' : ''}
+                </div>
+            `;
+        }
+
+        function showGameComplete() {
+            const finalScore = score;
+            const message = `
+                <h2>🎉 Congratulations! You've completed all challenges!</h2>
+                <p>Final Score: ${finalScore}</p>
+                <p>Longest Streak: ${streak}</p>
+                <button onclick="restartGame()" class="btn">Play Again</button>
+            `;
+            showPopup(message, true);
+        }
+
+        function checkAnswer() {
+            const codeEditor = document.querySelector('.code-editor');
+            const code = codeEditor.textContent.trim();
+            const feedback = document.getElementById('feedback');
+            
+            if (code.includes('greeting') && code.includes('Hello, World!')) {
+                feedback.textContent = 'Correct! Well done!';
+                feedback.className = 'feedback success';
+            } else {
+                feedback.textContent = 'Try again! Remember to create a variable named "greeting" with the correct value.';
+                feedback.className = 'feedback error';
+            }
+        }
+
+        // Update the hint system
+        function showHint() {
+            // Check if hints are available
+            if (hintsUsed >= MAX_HINTS) {
+                alert("You've used all available hints!");
+                return;
+            }
+
+            // Get current language and challenge
+            const language = document.getElementById('language-select').value;
+            const challenge = challenges[currentLevel];
+
+            if (confirm("Are you sure you want to see the solution? This will reduce your points by 50%.")) {
+                // Get the solution for current language
+                const solution = challenge.languages[language].solution;
+                
+                // Set the solution in the code editor
+                document.getElementById('code-area').value = solution;
+                
+                // Update hints count
+                hintsUsed++;
+                
+                // Update hint button text
+                const hintButton = document.getElementById('hint-button');
+                const remainingHints = MAX_HINTS - hintsUsed;
+                hintButton.textContent = `Show Solution 💡 (${remainingHints} left)`;
+                
+                // Disable button if no hints left
+                if (remainingHints <= 0) {
+                    hintButton.disabled = true;
+                    hintButton.textContent = 'No Solutions Left 💡';
+                }
+            }
+        }
+
+        // Add this function to reset hints when starting a new game
+        function resetHints() {
+            hintsUsed = 0;
+            const hintButton = document.getElementById('hint-button');
+            hintButton.disabled = false;
+            hintButton.textContent = `Show Solution 💡 (${MAX_HINTS} left)`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Paced Web Development Path - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+            --background: #f8fafc;
+            --text: #1e293b;
+            --success: #22c55e;
+            --warning: #eab308;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .learning-path {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .module-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-header {
+            margin-bottom: 30px;
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .module-subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .task-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background-color 0.2s ease;
+        }
+
+        .task-item:hover {
+            background-color: #f8fafc;
+            padding-left: 10px;
+        }
+
+        .task-checkbox {
+            margin-right: 15px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .task-description {
+            font-size: 0.85rem;
+            color: #64748b;
+            display: none;
+        }
+
+        .task-item:hover .task-description {
+            display: block;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            padding: 20px;
+            background: var(--background);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .badge-free {
+            background: var(--success);
+            color: white;
+        }
+
+        .badge-premium {
+            background: var(--warning);
+            color: white;
+        }
+
+        .completion-indicator {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .learning-path {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .resource-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .resource-category h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resource-category h3 i {
+            font-size: 1.5rem;
+        }
+
+        .resource-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-card h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .resource-card p {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .resource-link {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+
+        .badge-mixed {
+            background: linear-gradient(45deg, var(--success), var(--warning));
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Resources Header Styles */
+        .resources-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px;
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resources-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .resources-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .resources-title i {
+            font-size: 2.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .resources-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .resources-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+            margin-left: 75px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .resources-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Update existing resource category styles */
+        .resource-category {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .resource-category h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resource-category h3 i {
+            background: var(--primary);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+        /* Update resource card styles */
+        .resource-card {
+            background: var(--background);
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-card:hover::before {
+            opacity: 1;
+        }
+
+        .resource-card h4 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 15px;
+            padding: 8px 15px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            background: rgba(37, 99, 235, 0.2);
+            transform: translateX(5px);
+        }
+
+        .resource-link i {
+            font-size: 0.9rem;
+        }
+
+        /* Update badge styles */
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .resources-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .resources-title {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .resources-subtitle {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+
+        /* Back Button Styles */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .back-button i {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Add this back button at the beginning of the body -->
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+
+    <div class="hero">
+        <h1>Self-Paced Web Development Journey</h1>
+        <p>Learn at your own pace, track your progress, and build real-world projects</p>
+    </div>
+
+    <div class="container">
+        <div class="info-section" style="background: var(--card-bg); padding: 20px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <h2>How to Use This Guide</h2>
+            <p>This is a self-paced learning tracker for web development. Use the checkboxes to track your progress as you learn each concept through your preferred learning resources. We recommend:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Study each topic thoroughly before checking it off</li>
+                <li>Build projects to practice what you've learned</li>
+                <li>Use the provided resources for learning materials</li>
+                <li>Join coding communities for support and guidance</li>
+            </ul>
+        </div>
+        
+        <div class="learning-path">
+            <!-- HTML & CSS Module -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div>
+                        <h3>HTML & CSS Fundamentals</h3>
+                        <span>Foundation Module</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <div class="completion-indicator">0/10 tasks completed</div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>HTML Structure & Elements</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>CSS Styling & Selectors</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>CSS Box Model & Layout</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>Flexbox & Grid Systems</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>Responsive Design</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>CSS Animations & Transitions</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>Forms & Input Styling</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>CSS Variables & Organization</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>CSS Best Practices & Optimization</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>Build Portfolio Project</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- JavaScript Module -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fab fa-js"></i>
+                    </div>
+                    <div>
+                        <h3 class="module-title">JavaScript Essentials</h3>
+                        <span class="module-subtitle">Core Programming</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <div class="completion-indicator">0/15 tasks completed</div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Variables & Data Types</div>
+                            <div class="task-description">Learn about var, let, const, and different data types in JavaScript</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Control Flow & Loops</div>
+                            <div class="task-description">Master if statements, switch cases, for loops, while loops</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Functions & Scope</div>
+                            <div class="task-description">Understanding function declarations, expressions, and scope</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Arrays & Objects</div>
+                            <div class="task-description">Working with arrays, objects, and their methods</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">DOM Manipulation</div>
+                            <div class="task-description">Selecting and modifying HTML elements with JavaScript</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Events & Event Handling</div>
+                            <div class="task-description">Understanding event listeners and event objects</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">ES6+ Features</div>
+                            <div class="task-description">Arrow functions, destructuring, spread operator, modules</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Asynchronous JavaScript</div>
+                            <div class="task-description">Promises, async/await, fetch API</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Error Handling</div>
+                            <div class="task-description">Try/catch blocks and error handling patterns</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Local Storage</div>
+                            <div class="task-description">Working with browser storage APIs</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Object-Oriented JavaScript</div>
+                            <div class="task-description">Classes, inheritance, and OOP principles</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Functional Programming</div>
+                            <div class="task-description">Map, filter, reduce, and functional concepts</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Regular Expressions</div>
+                            <div class="task-description">Pattern matching and string manipulation</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">JavaScript Best Practices</div>
+                            <div class="task-description">Code organization, performance, and debugging</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Build JavaScript Project</div>
+                            <div class="task-description">Create a complete application using vanilla JavaScript</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- React Module -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fab fa-react"></i>
+                    </div>
+                    <div>
+                        <h3 class="module-title">React Development</h3>
+                        <span class="module-subtitle">Frontend Framework</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <div class="completion-indicator">0/15 tasks completed</div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">React Fundamentals</div>
+                            <div class="task-description">Understanding React, Virtual DOM, and JSX</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Components & Props</div>
+                            <div class="task-description">Creating components and passing data</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">State & Lifecycle</div>
+                            <div class="task-description">Managing component state and lifecycle methods</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Hooks</div>
+                            <div class="task-description">useState, useEffect, and custom hooks</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Event Handling</div>
+                            <div class="task-description">Handling user interactions in React</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Forms & Controlled Components</div>
+                            <div class="task-description">Working with forms and form validation</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Context API</div>
+                            <div class="task-description">Global state management with Context</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">React Router</div>
+                            <div class="task-description">Client-side routing and navigation</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">API Integration</div>
+                            <div class="task-description">Fetching and managing API data</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">State Management (Redux)</div>
+                            <div class="task-description">Advanced state management with Redux</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Performance Optimization</div>
+                            <div class="task-description">Memoization, lazy loading, and optimization techniques</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Testing React Apps</div>
+                            <div class="task-description">Unit testing and integration testing</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Deployment</div>
+                            <div class="task-description">Building and deploying React applications</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">React Best Practices</div>
+                            <div class="task-description">Code organization, patterns, and optimization</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Build React Project</div>
+                            <div class="task-description">Create a complete React application</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="resources">
+            <h2>Learning Resources</h2>
+            <div class="resource-categories">
+                <!-- Documentation -->
+                <div class="resource-category">
+                    <h3><i class="fas fa-book"></i> Documentation</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <h4>MDN Web Docs</h4>
+                            <p>Comprehensive web development documentation</p>
+                            <a href="https://developer.mozilla.org" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                        <div class="resource-card">
+                            <h4>W3Schools</h4>
+                            <p>Simple tutorials and references</p>
+                            <a href="https://www.w3schools.com" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                        <div class="resource-card">
+                            <h4>React Documentation</h4>
+                            <p>Official React.js documentation</p>
+                            <a href="https://reactjs.org/docs" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Learning -->
+                <div class="resource-category">
+                    <h3><i class="fas fa-laptop-code"></i> Interactive Learning</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <h4>freeCodeCamp</h4>
+                            <p>Interactive coding challenges and certifications</p>
+                            <a href="https://www.freecodecamp.org" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Codecademy</h4>
+                            <p>Interactive programming courses</p>
+                            <a href="https://www.codecademy.com" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-premium">Premium</span>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Scrimba</h4>
+                            <p>Interactive screencasts for web development</p>
+                            <a href="https://scrimba.com" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-mixed">Free/Premium</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- YouTube Channels -->
+                <div class="resource-category">
+                    <h3><i class="fab fa-youtube"></i> YouTube Channels</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <h4>Traversy Media</h4>
+                            <p>Web development tutorials and crash courses</p>
+                            <a href="https://www.youtube.com/user/TechGuyWeb" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Web Dev Simplified</h4>
+                            <p>In-depth web development concepts</p>
+                            <a href="https://www.youtube.com/c/WebDevSimplified" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Net Ninja</h4>
+                            <p>Structured web development tutorials</p>
+                            <a href="https://www.youtube.com/c/TheNetNinja" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice Platforms -->
+                <div class="resource-category">
+                    <h3><i class="fas fa-dumbbell"></i> Practice</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <h4>Frontend Mentor</h4>
+                            <p>Real-world frontend challenges</p>
+                            <a href="https://www.frontendmentor.io" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-mixed">Free/Premium</span>
+                        </div>
+                        <div class="resource-card">
+                            <h4>CodeWars</h4>
+                            <p>Programming challenges and katas</p>
+                            <a href="https://www.codewars.com" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                        <div class="resource-card">
+                            <h4>CSS Battle</h4>
+                            <p>CSS challenges and competitions</p>
+                            <a href="https://cssbattle.dev" target="_blank" class="resource-link">Visit</a>
+                            <span class="badge badge-free">Free</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add progress tracking functionality
+        const checkboxes = document.querySelectorAll('.task-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const moduleCard = this.closest('.module-card');
+                const progress = moduleCard.querySelector('.progress');
+                const indicator = moduleCard.querySelector('.completion-indicator');
+                const totalTasks = moduleCard.querySelectorAll('.task-checkbox').length;
+                const completedTasks = moduleCard.querySelectorAll('.task-checkbox:checked').length;
+                
+                const percentComplete = (completedTasks / totalTasks) * 100;
+                progress.style.width = percentComplete + '%';
+                indicator.textContent = `${completedTasks}/${totalTasks} tasks completed`;
+            });
+        });
+    </script>
+</body>
+</html> 

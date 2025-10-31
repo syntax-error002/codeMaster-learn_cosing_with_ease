@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Learning Hub | Ultimate Resource Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Modern CSS Reset and Variables */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #3b82f6;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        /* Header Styling */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+           
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            
+           
+        }
+
+        .header-primary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-logo {
+            font-size: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+        }
+
+        .site-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Resource Grid */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            position: relative;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
+        }
+
+        .resource-title {
+            font-size: 1.25rem;
+            color: var(--gray-800);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .resource-description {
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .feature i {
+            color: var(--primary);
+        }
+
+        .card-footer {
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+        }
+
+        .bookmark-btn:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* Category Headers */
+        .category-header {
+            margin: 3rem 0 2rem;
+            background-color: var(--gray-100);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .category-icon {
+            color: var(--primary);
+            background: var(--gray-100);
+            padding: 0.75rem;
+            border-radius: 12px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-primary {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .resource-card {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .back-button {
+            position: fixed;
+            left: 30px;
+            top: 20px;
+            z-index: 9999;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: #2563eb;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            margin-top: 639px;
+        }
+
+        .back-btn:hover {
+            background: #1d4ed8;
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .back-btn i {
+            font-size: 18px;
+        }
+
+        /* Make button more compact on mobile */
+        @media (max-width: 768px) {
+            .back-button {
+                left: 15px;
+                top: 15px;
+            }
+
+            .back-btn {
+                padding: 10px 15px;
+            }
+        }
+
+        /* Optional: Add a subtle bounce animation */
+        @keyframes bounce {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .back-btn:hover i {
+            animation: bounce 1s infinite;
+        }
+
+        /* Optional: Animation for button appearance */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .back-button {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="main-header">
+        <!-- Back Button -->
+        <div class="back-button">
+            <a href="test.html" class="back-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>Back</span>
+            </a>
+        </div>
+
+        <div class="header-container">
+            <div class="header-primary">
+                <div class="header-title">
+                    <i class="fas fa-graduation-cap header-logo"></i>
+                    <h1 class="site-title">Want to achieve your goals? 
+                         
+                    </h1>
+
+                </div>
+                <!-- Add search and navigation components here -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Programming Section -->
+        <section class="resource-section">
+            <div class="category-header">
+                <div class="category-title">
+                    <i class="fas fa-code category-icon"></i>
+                    Programming & Web Development
+                </div>
+            </div>
+
+            <div class="resources-grid">
+                <!-- freeCodeCamp -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">freeCodeCamp</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag popular-tag">Most Popular</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Complete web development curriculum with interactive tutorials and certifications.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Interactive Coding Lessons</span>
+                            <span class="feature"><i class="fas fa-check"></i>Real-World Projects</span>
+                            <span class="feature"><i class="fas fa-check"></i>Free Certifications</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.freecodecamp.org" class="primary-btn" target="_blank">Start Learning</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- The Odin Project -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">The Odin Project</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Full Stack</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Open-source curriculum for learning full-stack development.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Project-Based Learning</span>
+                            <span class="feature"><i class="fas fa-check"></i>Ruby on Rails & JavaScript</span>
+                            <span class="feature"><i class="fas fa-check"></i>Active Community</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.theodinproject.com" class="primary-btn" target="_blank">Explore Curriculum</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- MDN Web Docs -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">MDN Web Docs</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Documentation</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Comprehensive documentation and learning resources for web technologies.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Complete Documentation</span>
+                            <span class="feature"><i class="fas fa-check"></i>Tutorials & Guides</span>
+                            <span class="feature"><i class="fas fa-check"></i>Browser Compatibility Info</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://developer.mozilla.org" class="primary-btn" target="_blank">Read Docs</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Continue with more resources... -->
+            </div>
+        </section>
+
+        <!-- Data Structures & Algorithms Section -->
+        <section class="resource-section">
+            <div class="category-header">
+                <div class="category-title">
+                    <i class="fas fa-diagram-project category-icon"></i>
+                    Data Structures & Algorithms
+                </div>
+            </div>
+
+            <div class="resources-grid">
+                <!-- LeetCode -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">LeetCode</h3>
+                        <div class="tags">
+                            <span class="tag popular-tag">Most Popular</span>
+                            <span class="tag">Interview Prep</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Platform for practicing coding interview questions with a vast problem set.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>2000+ Problems</span>
+                            <span class="feature"><i class="fas fa-check"></i>Company-specific Questions</span>
+                            <span class="feature"><i class="fas fa-check"></i>Discussion Forums</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://leetcode.com" class="primary-btn" target="_blank">Start Practice</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- AlgoExpert -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">AlgoExpert</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Premium</span>
+                            <span class="tag">Video Explanations</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Curated list of interview questions with detailed video explanations.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>160+ Hand-Picked Questions</span>
+                            <span class="feature"><i class="fas fa-check"></i>Video Walkthroughs</span>
+                            <span class="feature"><i class="fas fa-check"></i>Space-Time Complexity Analysis</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.algoexpert.io" class="primary-btn" target="_blank">Learn More</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- HackerRank -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">HackerRank</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Practice Platform</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Coding challenges and competitions with certification opportunities.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Skill Certification</span>
+                            <span class="feature"><i class="fas fa-check"></i>Interview Preparation Kit</span>
+                            <span class="feature"><i class="fas fa-check"></i>Contest Platform</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.hackerrank.com" class="primary-btn" target="_blank">Start Practicing</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- GeeksforGeeks -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">GeeksforGeeks</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Comprehensive</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Extensive collection of DSA articles, problems, and tutorials.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>In-depth Articles</span>
+                            <span class="feature"><i class="fas fa-check"></i>Practice Problems</span>
+                            <span class="feature"><i class="fas fa-check"></i>Interview Preparation</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.geeksforgeeks.org" class="primary-btn" target="_blank">Explore</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- CSES Problem Set -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">CSES Problem Set</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Algorithmic</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Collection of competitive programming practice problems.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>300+ Problems</span>
+                            <span class="feature"><i class="fas fa-check"></i>Increasing Difficulty</span>
+                            <span class="feature"><i class="fas fa-check"></i>Automated Testing</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://cses.fi/problemset/" class="primary-btn" target="_blank">Solve Problems</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Visualgo -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Visualgo</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Visualization</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Visualizing data structures and algorithms through animation.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Interactive Visualizations</span>
+                            <span class="feature"><i class="fas fa-check"></i>Algorithm Animations</span>
+                            <span class="feature"><i class="fas fa-check"></i>Practice Mode</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://visualgo.net" class="primary-btn" target="_blank">Visualize</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Machine Learning & AI Section -->
+        <section class="resource-section">
+            <div class="category-header">
+                <div class="category-title">
+                    <i class="fas fa-brain category-icon"></i>
+                    Machine Learning & AI
+                </div>
+            </div>
+
+            <div class="resources-grid">
+                <!-- Fast.ai -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Fast.ai</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag popular-tag">Top Rated</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Practical Deep Learning for Coders with hands-on tutorials.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>PyTorch Based</span>
+                            <span class="feature"><i class="fas fa-check"></i>Top-down Teaching</span>
+                            <span class="feature"><i class="fas fa-check"></i>Real-world Applications</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.fast.ai" class="primary-btn" target="_blank">Start Learning</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Coursera ML Specialization -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Machine Learning Specialization</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Coursera</span>
+                            <span class="tag">Andrew Ng</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Comprehensive ML course covering fundamentals to advanced topics.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Structured Learning Path</span>
+                            <span class="feature"><i class="fas fa-check"></i>Python Implementation</span>
+                            <span class="feature"><i class="fas fa-check"></i>Certificate Available</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.coursera.org/specializations/machine-learning-introduction" class="primary-btn" target="_blank">Enroll Now</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- TensorFlow Documentation -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">TensorFlow Documentation</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Official Docs</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Official documentation and tutorials for TensorFlow.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Comprehensive Guides</span>
+                            <span class="feature"><i class="fas fa-check"></i>Code Examples</span>
+                            <span class="feature"><i class="fas fa-check"></i>API References</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.tensorflow.org/learn" class="primary-btn" target="_blank">Explore</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Kaggle -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Kaggle</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag popular-tag">Community</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Platform for ML competitions, datasets, and learning resources.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Free Courses</span>
+                            <span class="feature"><i class="fas fa-check"></i>Competitions</span>
+                            <span class="feature"><i class="fas fa-check"></i>Datasets & Notebooks</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.kaggle.com/learn" class="primary-btn" target="_blank">Join Now</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- PyTorch Tutorials -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">PyTorch Tutorials</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Official</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Official PyTorch tutorials and documentation.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Beginner Friendly</span>
+                            <span class="feature"><i class="fas fa-check"></i>Advanced Topics</span>
+                            <span class="feature"><i class="fas fa-check"></i>Example Projects</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://pytorch.org/tutorials/" class="primary-btn" target="_blank">Learn PyTorch</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Google ML Crash Course -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Google ML Crash Course</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Google</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Fast-paced, practical introduction to machine learning.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>TensorFlow Based</span>
+                            <span class="feature"><i class="fas fa-check"></i>Interactive Exercises</span>
+                            <span class="feature"><i class="fas fa-check"></i>Real-world Examples</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://developers.google.com/machine-learning/crash-course" class="primary-btn" target="_blank">Start Course</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Cloud & DevOps Resources Section -->
+        <section class="resource-section">
+            <div class="category-header">
+                <div class="category-title">
+                    <i class="fas fa-cloud category-icon"></i>
+                    Cloud & DevOps Resources
+                </div>
+            </div>
+
+            <div class="resources-grid">
+                <!-- AWS Resources -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">AWS Training and Certification</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag popular-tag">Official</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Official AWS learning resources and certification paths.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Digital Training</span>
+                            <span class="feature"><i class="fas fa-check"></i>Certification Prep</span>
+                            <span class="feature"><i class="fas fa-check"></i>Hands-on Labs</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://aws.amazon.com/training/" class="primary-btn" target="_blank">Start Learning</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Microsoft Azure -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Microsoft Learn for Azure</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Microsoft</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Free learning paths and modules for all Azure services.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Interactive Learning</span>
+                            <span class="feature"><i class="fas fa-check"></i>Role-based Paths</span>
+                            <span class="feature"><i class="fas fa-check"></i>Sandbox Environments</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://learn.microsoft.com/azure/" class="primary-btn" target="_blank">Explore Azure</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Google Cloud -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Google Cloud Training</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Google</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Official Google Cloud learning resources and Qwiklabs.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Qwiklabs Practice</span>
+                            <span class="feature"><i class="fas fa-check"></i>Skill Badges</span>
+                            <span class="feature"><i class="fas fa-check"></i>Learning Paths</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://cloud.google.com/training" class="primary-btn" target="_blank">Get Started</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Docker -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Docker Documentation</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Containers</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Official Docker documentation and tutorials.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Getting Started Guides</span>
+                            <span class="feature"><i class="fas fa-check"></i>Best Practices</span>
+                            <span class="feature"><i class="fas fa-check"></i>Sample Applications</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://docs.docker.com/get-started/" class="primary-btn" target="_blank">Learn Docker</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Kubernetes -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Kubernetes Documentation</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Orchestration</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Official Kubernetes documentation and tutorials.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Concepts Guide</span>
+                            <span class="feature"><i class="fas fa-check"></i>Interactive Tutorials</span>
+                            <span class="feature"><i class="fas fa-check"></i>Task Documentation</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://kubernetes.io/docs/tutorials/" class="primary-btn" target="_blank">Learn K8s</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Jenkins -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Jenkins Handbook</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">CI/CD</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Comprehensive guide to Jenkins and CI/CD practices.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Pipeline Tutorials</span>
+                            <span class="feature"><i class="fas fa-check"></i>Plugin Guides</span>
+                            <span class="feature"><i class="fas fa-check"></i>Best Practices</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.jenkins.io/doc/book/" class="primary-btn" target="_blank">Explore Jenkins</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Terraform -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">HashiCorp Learn</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">IaC</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Official Terraform and HashiCorp tools learning platform.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Interactive Tutorials</span>
+                            <span class="feature"><i class="fas fa-check"></i>Certification Prep</span>
+                            <span class="feature"><i class="fas fa-check"></i>Real-world Examples</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://learn.hashicorp.com/terraform" class="primary-btn" target="_blank">Learn Terraform</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Linux Academy -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">A Cloud Guru</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Premium</span>
+                            <span class="tag">Comprehensive</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Comprehensive cloud and DevOps training platform.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Cloud Certifications</span>
+                            <span class="feature"><i class="fas fa-check"></i>Hands-on Labs</span>
+                            <span class="feature"><i class="fas fa-check"></i>Learning Paths</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://acloudguru.com" class="primary-btn" target="_blank">Join Now</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Ethical Hacking & Cybersecurity Section -->
+        <section class="resource-section">
+            <div class="category-header">
+                <div class="category-title">
+                    <i class="fas fa-shield-alt category-icon"></i>
+                    Ethical Hacking & Cybersecurity
+                </div>
+            </div>
+
+            <div class="resources-grid">
+                <!-- TryHackMe -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">TryHackMe</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free/Premium</span>
+                            <span class="tag popular-tag">Beginner Friendly</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Learn cybersecurity through hands-on labs and challenges.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Interactive Labs</span>
+                            <span class="feature"><i class="fas fa-check"></i>Learning Paths</span>
+                            <span class="feature"><i class="fas fa-check"></i>Guided Challenges</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://tryhackme.com" class="primary-btn" target="_blank">Start Hacking</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- HackTheBox -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Hack The Box</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free/Premium</span>
+                            <span class="tag">Advanced</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Advanced penetration testing labs and challenges.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Real-world Scenarios</span>
+                            <span class="feature"><i class="fas fa-check"></i>Active Machines</span>
+                            <span class="feature"><i class="fas fa-check"></i>CTF Challenges</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.hackthebox.com" class="primary-btn" target="_blank">Join HTB</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- PortSwigger Web Security Academy -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">PortSwigger Academy</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Web Security</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Comprehensive web security training from the creators of Burp Suite.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Detailed Materials</span>
+                            <span class="feature"><i class="fas fa-check"></i>Practice Labs</span>
+                            <span class="feature"><i class="fas fa-check"></i>OWASP Coverage</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://portswigger.net/web-security" class="primary-btn" target="_blank">Learn More</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- OWASP -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">OWASP Resources</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Foundation</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Open Web Application Security Project resources and tools.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Security Guidelines</span>
+                            <span class="feature"><i class="fas fa-check"></i>Testing Guides</span>
+                            <span class="feature"><i class="fas fa-check"></i>Top 10 Vulnerabilities</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://owasp.org" class="primary-btn" target="_blank">Explore OWASP</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Vulnhub -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">VulnHub</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">VM Based</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Vulnerable virtual machines for practical learning.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Downloadable VMs</span>
+                            <span class="feature"><i class="fas fa-check"></i>Various Difficulty Levels</span>
+                            <span class="feature"><i class="fas fa-check"></i>Community Submissions</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.vulnhub.com" class="primary-btn" target="_blank">Download VMs</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Offensive Security -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Offensive Security</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Premium</span>
+                            <span class="tag">Professional</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Professional penetration testing training and certifications.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>OSCP Certification</span>
+                            <span class="feature"><i class="fas fa-check"></i>PWK Course</span>
+                            <span class="feature"><i class="fas fa-check"></i>Lab Access</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.offensive-security.com" class="primary-btn" target="_blank">Get Started</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Hacker101 -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Hacker101</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Bug Bounty</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Free class for web security and bug bounty hunting.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Video Lessons</span>
+                            <span class="feature"><i class="fas fa-check"></i>CTF Challenges</span>
+                            <span class="feature"><i class="fas fa-check"></i>HackerOne Integration</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.hacker101.com" class="primary-btn" target="_blank">Learn More</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Metasploit Unleashed -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Metasploit Unleashed</h3>
+                        <div class="tags">
+                            <span class="tag free-tag">Free</span>
+                            <span class="tag">Penetration Testing</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Free Metasploit training course by Offensive Security.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Comprehensive Guide</span>
+                            <span class="feature"><i class="fas fa-check"></i>Practical Examples</span>
+                            <span class="feature"><i class="fas fa-check"></i>Expert Material</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.offensive-security.com/metasploit-unleashed/" class="primary-btn" target="_blank">Start Learning</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Cybersecurity Certification Preparation Resources -->
+        <section class="resource-section">
+            <div class="category-header">
+                <div class="category-title">
+                    <i class="fas fa-certificate category-icon"></i>
+                    Cybersecurity Certification Resources
+                </div>
+            </div>
+
+            <div class="resources-grid">
+                <!-- CompTIA Security+ -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">CompTIA Security+ Certification</h3>
+                        <div class="tags">
+                            <span class="tag popular-tag">Entry Level</span>
+                            <span class="tag">Most Popular</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Foundation-level security certification, ideal for beginners.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Official Study Guide</span>
+                            <span class="feature"><i class="fas fa-check"></i>Practice Tests</span>
+                            <span class="feature"><i class="fas fa-check"></i>Performance Based</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.comptia.org/certifications/security" class="primary-btn" target="_blank">Learn More</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- CEH (Certified Ethical Hacker) -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">CEH Certification</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Professional</span>
+                            <span class="tag">Industry Standard</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            EC-Council's flagship certification for ethical hackers.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Official Training</span>
+                            <span class="feature"><i class="fas fa-check"></i>iLabs Platform</span>
+                            <span class="feature"><i class="fas fa-check"></i>Exam Voucher</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.eccouncil.org/programs/certified-ethical-hacker-ceh/" class="primary-btn" target="_blank">Get Certified</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- OSCP -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">OSCP Certification</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Advanced</span>
+                            <span class="tag">Highly Respected</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Offensive Security Certified Professional - hands-on penetration testing certification.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>PWK Course</span>
+                            <span class="feature"><i class="fas fa-check"></i>Lab Access</span>
+                            <span class="feature"><i class="fas fa-check"></i>Practical Exam</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.offensive-security.com/pwk-oscp/" class="primary-btn" target="_blank">Explore OSCP</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- CISSP -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">CISSP Certification</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Advanced</span>
+                            <span class="tag">Management Level</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Advanced security management certification by (ISC)².
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Official Study Materials</span>
+                            <span class="feature"><i class="fas fa-check"></i>Practice Tests</span>
+                            <span class="feature"><i class="fas fa-check"></i>Study Groups</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.isc2.org/Certifications/CISSP" class="primary-btn" target="_blank">Get Started</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- CISA -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">CISA Certification</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Professional</span>
+                            <span class="tag">Audit Focused</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            ISACA's Certified Information Systems Auditor certification.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Review Manual</span>
+                            <span class="feature"><i class="fas fa-check"></i>Question Database</span>
+                            <span class="feature"><i class="fas fa-check"></i>Online Learning</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.isaca.org/credentialing/cisa" class="primary-btn" target="_blank">Learn More</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- CCNA Security -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">CCNA Security</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Cisco</span>
+                            <span class="tag">Network Security</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Cisco's network security certification program.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Official Curriculum</span>
+                            <span class="feature"><i class="fas fa-check"></i>Hands-on Labs</span>
+                            <span class="feature"><i class="fas fa-check"></i>Packet Tracer</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/associate/ccna.html" class="primary-btn" target="_blank">Get Certified</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- eLearnSecurity -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">eLearnSecurity Certifications</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Professional</span>
+                            <span class="tag">Practical Focus</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Practical cybersecurity certifications with hands-on labs.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>Video Training</span>
+                            <span class="feature"><i class="fas fa-check"></i>Lab Exercises</span>
+                            <span class="feature"><i class="fas fa-check"></i>Practical Exams</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://elearnsecurity.com/product/ejpt-certification/" class="primary-btn" target="_blank">Explore Certs</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+
+                <!-- Cloud Security Certifications -->
+                <article class="resource-card">
+                    <div class="card-header">
+                        <h3 class="resource-title">Cloud Security Certifications</h3>
+                        <div class="tags">
+                            <span class="tag premium-tag">Specialized</span>
+                            <span class="tag">Cloud Focus</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="resource-description">
+                            Various cloud security certifications from major providers.
+                        </p>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-check"></i>AWS Security</span>
+                            <span class="feature"><i class="fas fa-check"></i>Azure Security</span>
+                            <span class="feature"><i class="fas fa-check"></i>GCP Security</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://aws.amazon.com/certification/security-specialty/" class="primary-btn" target="_blank">Explore Options</a>
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Add more sections here -->
+    </main>
+
+    <script>
+        // Add any interactive functionality here
+        document.querySelectorAll('.bookmark-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.querySelector('i').classList.toggle('fas');
+                btn.querySelector('i').classList.toggle('far');
+            });
+        });
+    </script>
+</body>
+</html>

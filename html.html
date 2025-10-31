@@ -1,0 +1,173 @@
+<body></body>
+    <div class="hero">
+        <h1>Off-Campus Interview Prep</h1>
+        <p>Master the most asked HTML questions in top tech companies</p>
+        <div class="quick-filters">
+            <button class="filter-btn" data-filter="all">All Questions</button>
+            <button class="filter-btn" data-filter="easy">Easy</button>
+            <button class="filter-btn" data-filter="medium">Medium</button>
+            <button class="filter-btn" data-filter="hard">Hard</button>
+            <button class="filter-btn" data-company="google">Google</button>
+            <button class="filter-btn" data-company="meta">Meta</button>
+            <button class="filter-btn" data-company="amazon">Amazon</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Question 1 -->
+        <div class="question-card" data-difficulty="medium" data-company="google">
+            <span class="company-tag google">Google</span>
+            <span class="difficulty medium">Medium</span>
+            <h3 class="question-title">1. Explain HTML5 Semantic Elements and their importance in modern web development</h3>
+            <button class="show-answer-btn" onclick="toggleAnswer(1)">Show Answer</button>
+            <div id="answer1" class="answer-section">
+                <div class="code-block">
+                    <!-- Semantic Structure -->
+                    <header>
+                        <nav><!-- Navigation --></nav>
+                    </header>
+                    <main>
+                        <article>
+                            <section><!-- Content --></section>
+                        </article>
+                        <aside><!-- Sidebar --></aside>
+                    </main>
+                    <footer><!-- Footer --></footer>
+                </div>
+
+                <div class="tips-section">
+                    <strong>🎯 Interview Tips:</strong>
+                    <ul>
+                        <li>Mention SEO benefits</li>
+                        <li>Discuss accessibility improvements</li>
+                        <li>Compare with non-semantic elements</li>
+                    </ul>
+                </div>
+
+                <h4>Key Points:</h4>
+                <ul>
+                    <li>Better document structure</li>
+                    <li>Improved accessibility</li>
+                    <li>Enhanced SEO performance</li>
+                    <li>Clearer code organization</li>
+                </ul>
+            </div>
+            <div class="tags">
+                <span class="tag">HTML5</span>
+                <span class="tag">Semantics</span>
+                <span class="tag">SEO</span>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" data-difficulty="hard" data-company="meta">
+            <span class="company-tag meta">Meta</span>
+            <span class="difficulty hard">Hard</span>
+            <h3 class="question-title">2. Explain the Critical Rendering Path and its optimization techniques</h3>
+            <button class="show-answer-btn" onclick="toggleAnswer(2)">Show Answer</button>
+            <div id="answer2" class="answer-section">
+                <h4>Critical Rendering Path Steps:</h4>
+                <ol>
+                    <li>DOM Construction</li>
+                    <li>CSSOM Construction</li>
+                    <li>Render Tree Construction</li>
+                    <li>Layout</li>
+                    <li>Paint</li>
+                </ol>
+
+                <div class="tips-section">
+                    <strong>🚀 Optimization Techniques:</strong>
+                    <ul>
+                        <li>Minimize critical resources</li>
+                        <li>Optimize loading order</li>
+                        <li>Reduce DOM depth</li>
+                        <li>Defer non-critical CSS/JS</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <!-- Optimization Example -->
+                    <link rel="preload" href="critical.css" as="style">
+                    <link rel="stylesheet" href="critical.css">
+                    <link rel="stylesheet" href="non-critical.css" media="print" onload="this.media='all'">
+                </div>
+            </div>
+            <div class="tags">
+                <span class="tag">Performance</span>
+                <span class="tag">Optimization</span>
+                <span class="tag">Loading</span>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" data-difficulty="medium" data-company="amazon">
+            <span class="company-tag amazon">Amazon</span>
+            <span class="difficulty medium">Medium</span>
+            <h3 class="question-title">3. How do you ensure web accessibility in your HTML?</h3>
+            <button class="show-answer-btn" onclick="toggleAnswer(3)">Show Answer</button>
+            <div id="answer3" class="answer-section">
+                <div class="code-block">
+                    <!-- Accessibility Examples -->
+                    <img src="logo.png" alt="Company Logo" aria-label="Company Logo">
+                    <button aria-label="Close dialog" role="button">×</button>
+                    <div role="alert">Error message</div>
+                </div>
+
+                <h4>Key Accessibility Features:</h4>
+                <ul>
+                    <li>Proper heading hierarchy</li>
+                    <li>ARIA labels and roles</li>
+                    <li>Alt text for images</li>
+                    <li>Keyboard navigation</li>
+                    <li>Color contrast</li>
+                </ul>
+
+                <div class="tips-section">
+                    <strong>🎯 Testing Tools:</strong>
+                    <ul>
+                        <li>WAVE</li>
+                        <li>Lighthouse</li>
+                        <li>Screen readers</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tags">
+                <span class="tag">Accessibility</span>
+                <span class="tag">ARIA</span>
+                <span class="tag">Best Practices</span>
+            </div>
+        </div>
+
+        <!-- Add more questions following the same pattern -->
+
+    </div>
+
+    <script>
+        // Toggle answer visibility
+        function toggleAnswer(id) {
+            const answer = document.getElementById('answer' + id);
+            const button = answer.previousElementSibling;
+            answer.classList.toggle('show');
+            button.textContent = answer.classList.contains('show') ? 'Hide Answer' : 'Show Answer';
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.filter;
+                const company = button.dataset.company;
+                
+                document.querySelectorAll('.question-card').forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                    } else if (filter) {
+                        card.style.display = card.dataset.difficulty === filter ? 'block' : 'none';
+                    } else if (company) {
+                        card.style.display = card.dataset.company === company ? 'block' : 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

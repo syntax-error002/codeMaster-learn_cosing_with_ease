@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Development Path - CodeMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+            --background: #f8fafc;
+            --text: #1e293b;
+            --success: #22c55e;
+            --warning: #eab308;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .learning-path {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .module-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-header {
+            margin-bottom: 30px;
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .module-subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .task-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background-color 0.2s ease;
+        }
+
+        .task-item:hover {
+            background-color: #f8fafc;
+            padding-left: 10px;
+        }
+
+        .task-checkbox {
+            margin-right: 15px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .task-description {
+            font-size: 0.85rem;
+            color: #64748b;
+            display: none;
+        }
+
+        .task-item:hover .task-description {
+            display: block;
+        }
+
+        .resources {
+            margin-top: 40px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            padding: 20px;
+            background: var(--background);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .badge-free {
+            background: var(--success);
+            color: white;
+        }
+
+        .badge-premium {
+            background: var(--warning);
+            color: white;
+        }
+
+        .badge-mixed {
+            background: linear-gradient(45deg, var(--success), var(--warning));
+            color: white;
+        }
+
+        .completion-indicator {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        .resource-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .resource-category h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resource-category h3 i {
+            font-size: 1.5rem;
+        }
+
+        .resources-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px;
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resources-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .resources-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+           
+        }
+
+        .back-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 20px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .learning-path {
+                grid-template-columns: 1fr;
+            }
+
+            .resources-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .resources-title {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .back-button {
+                top: 10px;
+                left: 10px;
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .resource-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .resource-link:hover::before {
+            transform: translateX(100%);
+        }
+
+        .resource-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .resource-link i {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .resource-link:hover i {
+            transform: translateX(3px);
+        }
+
+        .resource-link.docs {
+            background: linear-gradient(135deg, #3b82f6, #2dd4bf);
+        }
+
+        .resource-link.tutorial {
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+        }
+
+        .resource-link.tool {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+        }
+
+        .resource-link .link-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin-left: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover .link-icon {
+            transform: translateX(3px) rotate(45deg);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .back-button i {
+            font-size: 1.1rem;
+        }
+
+        .hero {
+            margin-top: 70px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                height: 60px;
+                padding: 0 20px;
+            }
+            
+            .hero {
+                margin-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+    </header>
+
+    <div class="hero">
+        <h1>Mobile Development Journey</h1>
+        <p>Master mobile app development from fundamentals to advanced concepts</p>
+    </div>
+
+    <div class="container">
+        <div class="info-section" style="background: var(--card-bg); padding: 20px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <h2>Getting Started with Mobile Development</h2>
+            <p>This curriculum covers both native and cross-platform mobile development. Choose your path based on your goals:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Native Android: Focus on Java/Kotlin for Android-specific apps</li>
+                <li>Native iOS: Learn Swift for Apple ecosystem</li>
+                <li>Cross-platform: Master React Native for both platforms</li>
+                <li>Complete all modules for full-stack mobile development</li>
+            </ul>
+        </div>
+        
+        <div class="learning-path">
+            <!-- Mobile Development Fundamentals Module -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div>
+                        <h3 class="module-title">Mobile Development Fundamentals</h3>
+                        <span class="module-subtitle">Core Concepts</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <div class="completion-indicator">0/10 tasks completed</div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Mobile Development Overview</div>
+                            <div class="task-description">Understanding mobile platforms, architectures, and development approaches</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Mobile UI/UX Principles</div>
+                            <div class="task-description">Learn mobile design patterns and user experience best practices</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Mobile App Lifecycle</div>
+                            <div class="task-description">Understanding app states, background processes, and lifecycle events</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Data Storage & Management</div>
+                            <div class="task-description">Local storage, caching, and data persistence strategies</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Mobile Navigation Patterns</div>
+                            <div class="task-description">Navigation architectures and screen transitions</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Mobile Network Operations</div>
+                            <div class="task-description">API integration, offline functionality, and network handling</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Device Features Integration</div>
+                            <div class="task-description">Camera, GPS, sensors, and other native features</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Mobile Security Basics</div>
+                            <div class="task-description">Security best practices and data protection</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Performance Optimization</div>
+                            <div class="task-description">Memory management and app optimization techniques</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Basic App Project</div>
+                            <div class="task-description">Create a simple mobile app implementing core concepts</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Native Android Development Module -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fab fa-android"></i>
+                    </div>
+                    <div>
+                        <h3 class="module-title">Native Android Development</h3>
+                        <span class="module-subtitle">Android Platform Specialization</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <div class="completion-indicator">0/12 tasks completed</div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Kotlin Fundamentals</div>
+                            <div class="task-description">Kotlin syntax, null safety, coroutines</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Android Studio & Tools</div>
+                            <div class="task-description">IDE setup, debugging, and development tools</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Activities & Fragments</div>
+                            <div class="task-description">Lifecycle, navigation, and UI components</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Layouts & UI Design</div>
+                            <div class="task-description">XML layouts, Material Design, custom views</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">RecyclerView & Adapters</div>
+                            <div class="task-description">List handling and data display</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Android Architecture Components</div>
+                            <div class="task-description">ViewModel, LiveData, Room database</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Data Storage & SQLite</div>
+                            <div class="task-description">SharedPreferences, Room, file storage</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Network Operations</div>
+                            <div class="task-description">Retrofit, OkHttp, API integration</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Background Processing</div>
+                            <div class="task-description">Services, WorkManager, background tasks</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">App Permissions</div>
+                            <div class="task-description">Runtime permissions and security</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Testing Android Apps</div>
+                            <div class="task-description">Unit tests, UI tests, and instrumentation tests</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Play Store Deployment</div>
+                            <div class="task-description">App signing, publishing, and distribution</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="resources">
+        <div class="resources-header">
+            <div class="resources-title">
+                <i class="fas fa-book"></i>
+                <h2>Mobile Development Resources</h2>
+            </div>
+            <p class="resources-subtitle">Curated learning materials and tools for mobile development</p>
+            <div class="resources-stats">
+                <div class="stat">
+                    <span class="stat-number">20+</span>
+                    <span class="stat-label">Free Courses</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">10+</span>
+                    <span class="stat-label">Tutorials</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">10+</span>
+                    <span class="stat-label">Tools</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="resource-categories">
+            <!-- Official Documentation -->
+            <div class="resource-category">
+                <h3><i class="fas fa-book"></i> Official Documentation</h3>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h4>React Native Docs</h4>
+                        <p>Official React Native documentation and guides</p>
+                        <a href="https://reactnative.dev/docs/getting-started" target="_blank" class="resource-link docs">
+                            Documentation
+                            <span class="link-icon">
+                                <i class="fas fa-external-link-alt"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Android Developers</h4>
+                        <p>Official Android development documentation</p>
+                        <a href="https://developer.android.com" target="_blank" class="resource-link docs">
+                            Documentation
+                            <span class="link-icon">
+                                <i class="fas fa-external-link-alt"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Kotlin Documentation</h4>
+                        <p>Official Kotlin programming language docs</p>
+                        <a href="https://kotlinlang.org/docs" target="_blank" class="resource-link docs">
+                            Documentation
+                            <span class="link-icon">
+                                <i class="fas fa-external-link-alt"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Online Courses -->
+            <div class="resource-category">
+                <h3><i class="fas fa-laptop-code"></i> Online Courses</h3>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h4>React Native - The Practical Guide</h4>
+                        <p>Comprehensive React Native course on Udemy</p>
+                        <a href="https://www.udemy.com/course/react-native-the-practical-guide" target="_blank" class="resource-link tutorial">
+                            Tutorial
+                            <span class="link-icon">
+                                <i class="fas fa-play"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-premium">Premium</span>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Android Development for Beginners</h4>
+                        <p>Free Android course by Google</p>
+                        <a href="https://developer.android.com/courses" target="_blank" class="resource-link tutorial">
+                            Tutorial
+                            <span class="link-icon">
+                                <i class="fas fa-play"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Mobile Design Course</h4>
+                        <p>UI/UX design principles for mobile apps</p>
+                        <a href="https://www.coursera.org/learn/mobile-design" target="_blank" class="resource-link tutorial">
+                            Tutorial
+                            <span class="link-icon">
+                                <i class="fas fa-play"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-mixed">Free/Premium</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Development Tools -->
+            <div class="resource-category">
+                <h3><i class="fas fa-tools"></i> Development Tools</h3>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h4>Android Studio</h4>
+                        <p>Official IDE for Android development</p>
+                        <a href="https://developer.android.com/studio" target="_blank" class="resource-link tool">
+                            Try Now
+                            <span class="link-icon">
+                                <i class="fas fa-tools"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Expo</h4>
+                        <p>Tools for React Native development</p>
+                        <a href="https://expo.dev" target="_blank" class="resource-link tool">
+                            Try Now
+                            <span class="link-icon">
+                                <i class="fas fa-tools"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Firebase</h4>
+                        <p>Backend services for mobile apps</p>
+                        <a href="https://firebase.google.com" target="_blank" class="resource-link tool">
+                            Try Now
+                            <span class="link-icon">
+                                <i class="fas fa-tools"></i>
+                            </span>
+                        </a>
+                        <span class="badge badge-mixed">Free/Premium</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community & Support -->
+            <div class="resource-category">
+                <h3><i class="fas fa-users"></i> Community & Support</h3>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h4>Stack Overflow</h4>
+                        <p>Q&A for mobile development</p>
+                        <a href="https://stackoverflow.com/questions/tagged/react-native" target="_blank" class="resource-link">
+                            Visit <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                    <div class="resource-card">
+                        <h4>GitHub</h4>
+                        <p>Open source projects and code examples</p>
+                        <a href="https://github.com/topics/mobile-development" target="_blank" class="resource-link">
+                            Visit <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Discord Communities</h4>
+                        <p>Mobile development Discord servers</p>
+                        <a href="#" class="resource-link">
+                            Join <i class="fab fa-discord"></i>
+                        </a>
+                        <span class="badge badge-free">Free</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Progress tracking functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const moduleCards = document.querySelectorAll('.module-card');
+            
+            moduleCards.forEach(card => {
+                const checkboxes = card.querySelectorAll('.task-checkbox');
+                const progressBar = card.querySelector('.progress');
+                const indicator = card.querySelector('.completion-indicator');
+                
+                // Update progress when checkbox state changes
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        updateProgress(card);
+                    });
+                });
+
+                // Initialize progress
+                updateProgress(card);
+            });
+        });
+
+        function updateProgress(moduleCard) {
+            const checkboxes = moduleCard.querySelectorAll('.task-checkbox');
+            const progressBar = moduleCard.querySelector('.progress');
+            const indicator = moduleCard.querySelector('.completion-indicator');
+            
+            const totalTasks = checkboxes.length;
+            const completedTasks = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+            
+            // Calculate percentage
+            const percentage = (completedTasks / totalTasks) * 100;
+            
+            // Update progress bar width
+            progressBar.style.width = percentage + '%';
+            
+            // Update text indicator
+            indicator.textContent = `${completedTasks}/${totalTasks} tasks completed`;
+
+            // Optional: Save progress to localStorage
+            const moduleId = moduleCard.querySelector('.module-title').textContent;
+            localStorage.setItem(`progress_${moduleId}`, JSON.stringify({
+                completed: completedTasks,
+                total: totalTasks
+            }));
+        }
+
+        // Load saved progress from localStorage
+        function loadSavedProgress() {
+            const moduleCards = document.querySelectorAll('.module-card');
+            
+            moduleCards.forEach(card => {
+                const moduleId = card.querySelector('.module-title').textContent;
+                const savedProgress = localStorage.getItem(`progress_${moduleId}`);
+                
+                if (savedProgress) {
+                    const { completed } = JSON.parse(savedProgress);
+                    const checkboxes = card.querySelectorAll('.task-checkbox');
+                    
+                    // Restore checked state for completed tasks
+                    for (let i = 0; i < completed; i++) {
+                        if (checkboxes[i]) {
+                            checkboxes[i].checked = true;
+                        }
+                    }
+                    
+                    // Update progress display
+                    updateProgress(card);
+                }
+            });
+        }
+
+        // Load saved progress when page loads
+        document.addEventListener('DOMContentLoaded', loadSavedProgress);
+    </script>
+</body>
+</html> 

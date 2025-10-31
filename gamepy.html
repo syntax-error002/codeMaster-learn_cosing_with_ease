@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Space Academy</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0a0a1a;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        #gameCanvas {
+            border: 2px solid #50fa7b;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .game-ui {
+            position: fixed;
+            color: #50fa7b;
+            font-size: 20px;
+            font-family: 'Courier New', monospace;
+            z-index: 100;
+        }
+
+        #score { top: 20px; left: 20px; }
+        #level { top: 50px; left: 20px; }
+        #health { top: 80px; left: 20px; }
+
+        #pythonQuestion {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border: 2px solid #50fa7b;
+            color: #50fa7b;
+            border-radius: 10px;
+            z-index: 1000;
+            width: 400px;
+            text-align: center;
+        }
+
+        #pythonQuestion button {
+            background: #50fa7b;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #gameOver {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border: 2px solid #50fa7b;
+            color: #50fa7b;
+            text-align: center;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="score" class="game-ui">Score: 0</div>
+    <div id="level" class="game-ui">Level: 1</div>
+    <div id="health" class="game-ui">Health: 100</div>
+
+    <div id="pythonQuestion">
+        <h2>Python Challenge!</h2>
+        <p id="question"></p>
+        <div id="answers"></div>
+    </div>
+
+    <div id="gameOver">
+        <h2>Game Over!</h2>
+        <p>Final Score: <span id="finalScore">0</span></p>
+        <button onclick="restartGame()">Play Again</button>
+    </div>
+
+    <script>
+        class Game {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                
+                // Set canvas size
+                this.canvas.width = 800;
+                this.canvas.height = 600;
+
+                // Game state
+                this.score = 0;
+                this.level = 1;
+                this.health = 100;
+                this.gameOver = false;
+
+                // Player
+                this.player = {
+                    x: this.canvas.width / 2,
+                    y: this.canvas.height - 50,
+                    width: 40,
+                    height: 40,
+                    speed: 5
+                };
+
+                // Game arrays
+                this.bullets = [];
+                this.enemies = [];
+                this.powerUps = [];
+
+                // Python questions
+                this.pythonQuestions = [
+                    {
+                        question: "What is the correct way to declare a variable in Python?",
+                        answers: ["x = 5", "var x = 5", "dim x = 5", "let x = 5"],
+                        correct: 0
+                    },
+                    {
+                        question: "How do you create a list in Python?",
+                        answers: ["list = [1, 2, 3]", "list = (1, 2, 3)", "array(1, 2, 3)", "list = {1, 2, 3}"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which is the correct way to write a function?",
+                        answers: ["def myFunction():", "function myFunction():", "void myFunction():", "func myFunction():"],
+                        correct: 0
+                    }
+                ];
+
+                // Event listeners
+                this.setupControls();
+                
+                // Start game loop
+                this.gameLoop();
+            }
+
+            setupControls() {
+                document.addEventListener('keydown', (e) => {
+                    if (this.gameOver) return;
+                    
+                    switch(e.key) {
+                        case 'ArrowLeft':
+                            this.movePlayer(-1);
+                            break;
+                        case 'ArrowRight':
+                            this.movePlayer(1);
+                            break;
+                        case ' ':
+                            this.shoot();
+                            break;
+                    }
+                });
+            }
+
+            movePlayer(direction) {
+                const newX = this.player.x + (this.player.speed * direction);
+                if (newX >= 0 && newX <= this.canvas.width - this.player.width) {
+                    this.player.x = newX;
+                }
+            }
+
+            shoot() {
+                this.bullets.push({
+                    x: this.player.x + this.player.width/2 - 2,
+                    y: this.player.y,
+                    width: 4,
+                    height: 10,
+                    speed: 7
+                });
+            }
+
+            spawnEnemy() {
+                if (Math.random() < 0.02) {
+                    this.enemies.push({
+                        x: Math.random() * (this.canvas.width - 30),
+                        y: -30,
+                        width: 30,
+                        height: 30,
+                        speed: 2
+                    });
+                }
+            }
+
+            update() {
+                if (this.gameOver) return;
+
+                // Update bullets
+                this.bullets.forEach(bullet => bullet.y -= bullet.speed);
+                this.bullets = this.bullets.filter(bullet => bullet.y > 0);
+
+                // Update enemies
+                this.enemies.forEach(enemy => {
+                    enemy.y += enemy.speed;
+                    
+                    // Check collision with player
+                    if (this.checkCollision(enemy, this.player)) {
+                        this.health -= 10;
+                        if (this.health <= 0) {
+                            this.endGame();
+                        }
+                    }
+                });
+                this.enemies = this.enemies.filter(enemy => enemy.y < this.canvas.height);
+
+                // Check bullet-enemy collisions
+                this.bullets.forEach((bullet, bulletIndex) => {
+                    this.enemies.forEach((enemy, enemyIndex) => {
+                        if (this.checkCollision(bullet, enemy)) {
+                            this.bullets.splice(bulletIndex, 1);
+                            this.enemies.splice(enemyIndex, 1);
+                            this.score += 10;
+                            
+                            // Show Python question occasionally
+                            if (Math.random() < 0.2) {
+                                this.showPythonQuestion();
+                            }
+                        }
+                    });
+                });
+
+                // Spawn enemies
+                this.spawnEnemy();
+
+                // Update UI
+                document.getElementById('score').textContent = `Score: ${this.score}`;
+                document.getElementById('level').textContent = `Level: ${this.level}`;
+                document.getElementById('health').textContent = `Health: ${this.health}`;
+            }
+
+            draw() {
+                // Clear canvas
+                this.ctx.fillStyle = '#0a0a1a';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Draw player
+                this.ctx.fillStyle = '#50fa7b';
+                this.ctx.fillRect(
+                    this.player.x,
+                    this.player.y,
+                    this.player.width,
+                    this.player.height
+                );
+
+                // Draw bullets
+                this.ctx.fillStyle = '#50fa7b';
+                this.bullets.forEach(bullet => {
+                    this.ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                });
+
+                // Draw enemies
+                this.ctx.fillStyle = '#ff5555';
+                this.enemies.forEach(enemy => {
+                    this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                });
+            }
+
+            checkCollision(rect1, rect2) {
+                return rect1.x < rect2.x + rect2.width &&
+                       rect1.x + rect1.width > rect2.x &&
+                       rect1.y < rect2.y + rect2.height &&
+                       rect1.y + rect1.height > rect2.y;
+            }
+
+            showPythonQuestion() {
+                const questionDiv = document.getElementById('pythonQuestion');
+                const question = this.pythonQuestions[Math.floor(Math.random() * this.pythonQuestions.length)];
+                
+                document.getElementById('question').textContent = question.question;
+                const answersDiv = document.getElementById('answers');
+                answersDiv.innerHTML = '';
+                
+                question.answers.forEach((answer, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = answer;
+                    button.onclick = () => this.answerQuestion(index === question.correct);
+                    answersDiv.appendChild(button);
+                });
+                
+                questionDiv.style.display = 'block';
+            }
+
+            answerQuestion(correct) {
+                document.getElementById('pythonQuestion').style.display = 'none';
+                if (correct) {
+                    this.score += 50;
+                    this.health = Math.min(100, this.health + 20);
+                }
+            }
+
+            endGame() {
+                this.gameOver = true;
+                document.getElementById('gameOver').style.display = 'block';
+                document.getElementById('finalScore').textContent = this.score;
+            }
+
+            gameLoop() {
+                this.update();
+                this.draw();
+                if (!this.gameOver) {
+                    requestAnimationFrame(() => this.gameLoop());
+                }
+            }
+        }
+
+        function restartGame() {
+            document.getElementById('gameOver').style.display = 'none';
+            new Game();
+        }
+
+        // Start the game
+        new Game();
+    </script>
+</body>
+</html>
